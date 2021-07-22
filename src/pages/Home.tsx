@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 
 import { Header } from '../components/Header';
 import { Task, TasksList } from '../components/TasksList';
@@ -14,7 +14,15 @@ export function Home() {
       title: newTaskTitle,
       done: false
     }
-    setTasks([...tasks, data]);
+
+    const findData = tasks.find(task =>  task.title === data.title)
+    
+    if(!!findData) {
+      Alert.alert('Tarefa já existente 😄')
+    } else {
+      setTasks([...tasks, data]);
+    }
+
   }
 
   function handleToggleTaskDone(id: number) {
@@ -27,7 +35,27 @@ export function Home() {
   }
 
   function handleRemoveTask(id: number) {
-    setTasks(tasks.filter(task => task.id !== id))
+    const createTwoButtonAlert = () =>
+    Alert.alert(
+      'Remove tarefa',
+      'Deseja realmente remover essa tarefas?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => {},
+          style: 'cancel'
+        },
+        { text: 'OK', onPress: () => {
+          setTasks(tasks.filter(task => task.id !== id))
+        } }
+      ]
+    );
+
+    createTwoButtonAlert()
+  }
+
+  function handleEditTask(id: number) {
+    
   }
 
   return (
@@ -40,6 +68,7 @@ export function Home() {
         tasks={tasks} 
         toggleTaskDone={handleToggleTaskDone}
         removeTask={handleRemoveTask} 
+        editTask={handleEditTask}
       />
     </View>
   )

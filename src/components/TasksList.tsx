@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import { ItemWrapper } from './ItemWrapper';
 
 import trashIcon from '../assets/icons/trash/trash.png'
+import penIcon from '../assets/icons/edit/Pen.png'
 
 export interface Task {
   id: number;
@@ -16,9 +17,10 @@ interface TasksListProps {
   tasks: Task[];
   toggleTaskDone: (id: number) => void;
   removeTask: (id: number) => void;
+  editTask: (id: number) => void;
 }
 
-export function TasksList({ tasks, toggleTaskDone, removeTask }: TasksListProps) {
+export function TasksList({ tasks, toggleTaskDone, removeTask, editTask }: TasksListProps) {
   return (
     <FlatList
       data={tasks}
@@ -55,14 +57,23 @@ export function TasksList({ tasks, toggleTaskDone, removeTask }: TasksListProps)
                 </Text>
               </TouchableOpacity>
             </View>
-
-            <TouchableOpacity
-              testID={`trash-${index}`}
-              style={{ paddingHorizontal: 24 }}
-              onPress={() => removeTask(item.id)}
-            >
-              <Image source={trashIcon} />
-            </TouchableOpacity>
+              
+            <View style={{flexDirection: 'row'}}>
+              <TouchableOpacity
+                testID={`trash-${index}`}
+                style={{ paddingRight: 12 }}
+                onPress={() => editTask(item.id)}
+              >
+                <Image source={penIcon} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                testID={`trash-${index}`}
+                style={{ paddingRight: 24 }}
+                onPress={() => removeTask(item.id)}
+              >
+                <Image source={trashIcon} />
+              </TouchableOpacity>
+            </View>
           </ItemWrapper>
         )
       }}
